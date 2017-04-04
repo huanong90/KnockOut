@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="person">
+    <p>
+        <span>My First name is
+            <input data-bind="value: firstname" />
+        </span>
+    </p>
+
+    <p>
+        <span>My Last name is
+            <input data-bind="value: lastname" />
+        </span>
+    </p>
+
+    <p>
+        <span>Computed Binding</span><br />
+        <span>My full name is <strong data-bind="text: fullname"></strong></span>
+    </p>
+
+    <p>
+        <span>HTML Binding</span><br />
+        <span>My full name is <span data-bind="html: fullnameHtml"></span></span>
+    </p>
+</div>
+
+<div id="product">
+    <p>
+        Today product's price is
+        <input data-bind="value: price" /><br />
+        So the price is very <span data-bind="text: priceDesc"></span>
+    </p>
+</div>
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/knockout-2.2.0.js"></script>
+    <script type="text/javascript">
+
+        function PersonViewModel() {
+            var self = this;
+            self.firstname = ko.observable('Paul');
+            self.lastname = ko.observable('Huang');
+            self.fullname = ko.computed(function () {
+                return this.firstname + ' ' + this.lastname;
+            });
+
+            self.fullnameHtml = ko.computed(function () {
+                return '<em>' + this.firstname + ' ' + this.lastname + '</em>';
+            });
+
+        }
+
+
+        function ProductViewModel() {
+            var self = this;
+            self.price = ko.observable(25);
+            self.priceDesc = ko.Computed(function () {
+                return this.price > 50 ? "Expensive" : "Cheap";
+            }, this);
+        }
+
+        ko.applyBindings(new PersonViewModel(), $("#person")[0]);
+        ko.applyBindings(new ProductViewModel(), $("#product")[0]);
+
+    </script>
+}
+
+
+
+
